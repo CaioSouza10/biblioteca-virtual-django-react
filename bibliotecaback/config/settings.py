@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',#appterceiros
     'rest_framework.authtoken',
     'corsheaders',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -171,17 +173,35 @@ REST_FRAMEWORK = {
 
 # MEDIA_URL é a URL base que servirá os arquivos de mídia.
 # Ex: http://meusite.com/media/covers/minha_capa.jpg
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 
 # MEDIA_ROOT é o caminho absoluto no sistema de arquivos para a pasta
 # onde os arquivos de mídia serão salvos.
-MEDIA_ROOT = BASE_DIR / 'media'
+#MEDIA_ROOT = BASE_DIR / 'media'
 
 # Configuração de arquivos estáticos para produção com Whitenoise
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
+# Configuração do Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
+
+# Diz ao Django para usar o Cloudinary para TODOS os arquivos de mídia.
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
