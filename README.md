@@ -2,7 +2,6 @@
 
 Uma aplicação web completa de uma biblioteca virtual, desenvolvida para demonstrar habilidades full stack com Python/Django no backend e React no frontend.
 
-![Screenshot da Aplicação](link_para_um_screenshot_seu)  <!-- Opcional, mas muito bom: tire um screenshot da sua aplicação e suba no GitHub para colocar o link aqui -->
 
 ## Funcionalidades Implementadas
 
@@ -36,34 +35,7 @@ Uma aplicação web completa de uma biblioteca virtual, desenvolvida para demons
 - Node.js e npm
 
 ### Backend
-```bash
-# 1. Clone o repositório
-git clone https://github.com/seu-nome/biblioteca-virtual-django-react.git
-cd biblioteca-virtual-django-react/backend
-
-# 2. Crie e ative o ambiente virtual
-python -m venv venv
-# No Windows: venv\Scripts\activate
-# No macOS/Linux: source venv/bin/activate
-
-# 3. Instale as dependências
-pip install -r requirements.txt
-
-# 4. Execute as migrações e inicie o servidor
-python manage.py migrate
-python manage.py runserver
-```
 O backend estará rodando em `http://127.0.0.1:8000`.
 
 ### Frontend
-```bash
-# Em um novo terminal, navegue para a pasta do frontend
-cd biblioteca-virtual-django-react/frontend
-
-# 1. Instale as dependências
-npm install
-
-# 2. Inicie o servidor de desenvolvimento
-npm run dev
-```
 A aplicação estará acessível em `http://localhost:5173` (ou a porta que o Vite indicar).
