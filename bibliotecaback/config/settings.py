@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-r_y_9ulk%e-u*a+gnlaf(jb@1f5y8kjc%u-v)8kvt8m2)@%+_)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = os.environ.get('DEBUG', 'True') != 'False'
 ALLOWED_HOSTS = []
+# Render nos dará uma variável de ambiente com o nosso hostname
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -46,18 +52,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    
     # 1º PONTO CRÍTICO: O CorsMiddleware DEVE vir ANTES do CommonMiddleware.
     'corsheaders.middleware.CorsMiddleware', 
-    
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-
     # 2º PONTO CRÍTICO: O AuthenticationMiddleware DEVE vir DEPOIS
     # do SessionMiddleware.
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -87,12 +90,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # Usa a variável de ambiente DATABASE_URL, mas se ela não existir,
+        # usa o nosso banco de dados local SQLite como padrão.
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -172,3 +176,13 @@ MEDIA_URL = '/media/'
 # MEDIA_ROOT é o caminho absoluto no sistema de arquivos para a pasta
 # onde os arquivos de mídia serão salvos.
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Configuração de arquivos estáticos para produção com Whitenoise
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
