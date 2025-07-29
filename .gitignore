@@ -1,0 +1,21 @@
+# Ambiente Virtual e Caches do Python
+/venv/
+__pycache__/
+*.pyc
+
+# Banco de Dados e Mídia do Django
+db.sqlite3
+/media/
+
+# Arquivos de Dependências do Node.js (essencial!)
+/frontend/node_modules/
+
+# Arquivos de Build e Logs
+/frontend/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de Sistema Operacional
+.DS_Store
+Thumbs.db
