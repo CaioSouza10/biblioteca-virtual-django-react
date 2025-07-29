@@ -1,5 +1,5 @@
 // A URL base da nossa API. Fica em um só lugar!
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
 
 /**
  * Uma função auxiliar para fazer requisições fetch,
@@ -8,8 +8,7 @@ const BASE_URL = 'http://127.0.0.1:8000/api';
  * @param {object} options - As opções da requisição fetch (method, headers, body).
  */
 async function request(endpoint, options = {}) {
-  const url = `${BASE_URL}${endpoint}`;
-  
+  const url = `${BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;  
   const response = await fetch(url, options);
 
   if (!response.ok) {
