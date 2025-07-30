@@ -127,7 +127,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles' # Para o collectstatic do Render
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -155,15 +155,13 @@ REST_FRAMEWORK = {
     ]
 }
 
-# Media files (Uploads) Configuration using Cloudinary
-# Esta é a configuração que o django-cloudinary-storage espera.
-# Ele lerá a variável de ambiente CLOUDINARY_URL automaticamente.
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Static files (Whitenoise) Configuration
-# Combinamos as duas chaves ("staticfiles" e "default") em um único dicionário STORAGES.
 STORAGES = {
+    # Responsável pelos arquivos estáticos (CSS, JS do Admin).
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+    # Responsável por TODOS os uploads de arquivos dos usuários (nossas capas).
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
 }
