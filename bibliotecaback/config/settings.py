@@ -120,88 +120,49 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles' # Para o collectstatic do Render
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-     "http://127.0.0.1:5173", 
+    "http://127.0.0.1:5173",
+    # Adicione a URL do seu Vercel aqui para segurança
+    "https://biblioteca-virtual-django-react.vercel.app", 
 ]
-
 CORS_ALLOW_HEADERS = [
     'Authorization',
     'Content-Type',
 ]
 
+# Django REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # Adiciona a autenticação por token como um método padrão global.
-        # O DRF tentará autenticar usando o token em todas as requisições protegidas.
         'rest_framework.authentication.TokenAuthentication',
-
-        # A autenticação por sessão é útil para permitir que você use a API
-        # diretamente no navegador se estiver logado no Django Admin.
-        # É bom mantê-la.
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        # Opcional, mas uma boa prática: por padrão, exige que os usuários
-        # estejam autenticados para acessar qualquer endpoint.
-        # Podemos sobrepor isso em views específicas se quisermos que sejam públicas.
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ]
 }
 
-# MEDIA_URL é a URL base que servirá os arquivos de mídia.
-# Ex: http://meusite.com/media/covers/minha_capa.jpg
-#MEDIA_URL = '/media/'
+# Media files (Uploads) Configuration using Cloudinary
+# Esta é a configuração que o django-cloudinary-storage espera.
+# Ele lerá a variável de ambiente CLOUDINARY_URL automaticamente.
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# MEDIA_ROOT é o caminho absoluto no sistema de arquivos para a pasta
-# onde os arquivos de mídia serão salvos.
-#MEDIA_ROOT = BASE_DIR / 'media'
-
-# Configuração de arquivos estáticos para produção com Whitenoise
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+# Static files (Whitenoise) Configuration
+# Combinamos as duas chaves ("staticfiles" e "default") em um único dicionário STORAGES.
 STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
-
-# Configuração do Cloudinary
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
-
-# Diz ao Django para usar o Cloudinary para TODOS os arquivos de mídia.
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
