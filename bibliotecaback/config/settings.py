@@ -144,6 +144,12 @@ CORS_ALLOW_HEADERS = [
     'Content-Type',
 ]
 
+# Adiciona a URL do frontend à lista de origens confiáveis do Django
+# para proteção CSRF.
+CSRF_TRUSTED_ORIGINS = [
+    "https://biblioteca-virtual-django-react.vercel.app",
+]
+
 # Django REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
